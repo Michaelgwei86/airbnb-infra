@@ -1,5 +1,10 @@
 # Slack notification pipeline syntax
 
+def COLOR_MAP = [
+    'SUCCESS': 'good',
+    'FAILURE': 'danger',
+    ]
+
 pipeline {
     agent any
 
@@ -16,9 +21,11 @@ pipeline {
     post {
         always {
             echo 'Pipeline execution completed'
-            slackSend channel: 'effulgencetech-devops-channel', color: 'good', message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            // slackSend channel: 'effulgencetech-devops-channel', color: 'good', message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
+            slackSend channel: 'effulgencetech-devops-channel', color: COLOR_MAP[currentBuild.currentResult], message: "*${currentBuild.currentResult}:* Job ${env.JOB_NAME} build ${env.BUILD_NUMBER} \n More info at: ${env.BUILD_URL}"
         }
         
     }
 }
+
 
